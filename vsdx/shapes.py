@@ -708,6 +708,8 @@ class Shape:
     @layer.setter
     def layer(self, layer: vsdx.Layer):
         self.set_cell_value('LayerMember', str(layer.id))
+        for shape in self.child_shapes:
+            shape.layer = layer
 
     def set_layer(self, layer_id: str):
         """Set the layer for this shape.
@@ -718,6 +720,8 @@ class Shape:
         if self.page.get_layer_by_id(layer_id) is None:
             raise ValueError(f"Layer with ID '{layer_id}' not found on page")  
         self.set_cell_value('LayerMember', layer_id)
+        for shape in self.child_shapes:
+            shape.set_layer(layer_id)
 
     @deprecation.deprecated(deprecated_in="0.5.0", removed_in="1.0.0", current_version=vsdx.__version__,
                             details="Use Shape.child_shapes property to access shapes within a shape")
